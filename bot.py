@@ -116,7 +116,7 @@ async def status_task() -> None:
     """
     Setup the game status task of the bot
     """
-    statuses = ["малака саси!!1!", "считаю ваши баллы!", "слежу за вами!"]
+    statuses = ["рассматриваю ваши отчёты...", "считаю ваши баллы!", "слежу за вами!", "B.B. FACTIONS BOT | 1.3 V"]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
 
@@ -160,8 +160,8 @@ async def on_command_error(context: Context, error) -> None:
         hours, minutes = divmod(minutes, 60)
         hours = hours % 24
         embed = discord.Embed(
-            title="Hey, please slow down!",
-            description=f"You can use this command again in {f'{round(hours)} hours' if round(hours) > 0 else ''} {f'{round(minutes)} minutes' if round(minutes) > 0 else ''} {f'{round(seconds)} seconds' if round(seconds) > 0 else ''}.",
+            title="Товарищ, придержи коней!(080)",
+            description=f"Ты можешь использовать команду через {f'{round(hours)} часов' if round(hours) > 0 else ''} {f'{round(minutes)} минут' if round(minutes) > 0 else ''} {f'{round(seconds)} секунд' if round(seconds) > 0 else ''}.",
             color=0xE02B2B
         )
         await context.send(embed=embed)
@@ -171,8 +171,8 @@ async def on_command_error(context: Context, error) -> None:
         the @checks.not_blacklisted() check in your command, or you can raise the error by yourself.
         """
         embed = discord.Embed(
-            title="Error!",
-            description="You are blacklisted from using the bot.",
+            title="Ошибка!(090)",
+            description="Вы были внесены в черный список для бота.",
             color=0xE02B2B
         )
         await context.send(embed=embed)
@@ -196,7 +196,7 @@ async def on_command_error(context: Context, error) -> None:
         await context.send(embed=embed)
     elif isinstance(error, commands.MissingRequiredArgument):
         embed = discord.Embed(
-            title="Error!",
+            title=" Критическая ошибка! (099)",
             # We need to capitalize because the command arguments have no capital letter in the code.
             description=str(error).capitalize(),
             color=0xE02B2B
