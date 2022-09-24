@@ -1,11 +1,3 @@
-""""
-Copyright © Krypton 2022 - https://github.com/kkrypt0nn (https://krypton.ninja)
-Description:
-This is a template to create your own discord bot in python.
-
-Version: 5.0
-"""
-
 from doctest import debug_script
 import discord
 from discord import app_commands
@@ -22,12 +14,12 @@ class Moderation(commands.Cog, name="moderation"):
 
     @commands.hybrid_command(
         name="kick",
-        description="Kick a user out of the server.",
+        description="Кикает участника из сервера",
     )
     @commands.has_permissions(kick_members=True)
     @checks.not_blacklisted()
-    @app_commands.describe(user="The user that should be kicked.", reason="The reason why the user should be kicked.")
-    async def kick(self, context: Context, user: discord.User, reason: str = "Not specified") -> None:
+    @app_commands.describe(user="Никнейм юзера.", reason="Причина.")
+    async def kick(self, context: Context, user: discord.User, reason: str = "Причина неизвестна.") -> None:
         """
         Kick a user out of the server.
 
@@ -46,18 +38,18 @@ class Moderation(commands.Cog, name="moderation"):
         else:
             try:
                 embed = discord.Embed(
-                    title="User Kicked!",
-                    description=f"**{member}** was kicked by **{context.author}**!",
+                    title="Участник кикнут!",
+                    description=f"**{member}** был кикнут за **{context.author}**.",
                     color=0x9C84EF
                 )
                 embed.add_field(
-                    name="Reason:",
+                    name="Причина:",
                     value=reason
                 )
                 await context.send(embed=embed)
                 try:
                     await member.send(
-                        f"You were kicked by **{context.author}**!\nReason: {reason}"
+                        f"Вы были кикнуты за:**{context.author}**!\nПричина: {reason}"
                     )
                 except:
                     # Couldn't send a message in the private messages of the user
@@ -65,19 +57,19 @@ class Moderation(commands.Cog, name="moderation"):
                 await member.kick(reason=reason)
             except:
                 embed = discord.Embed(
-                    title="Error!",
-                    description="An error occurred while trying to kick the user. Make sure my role is above the role of the user you want to kick.",
+                    title="Ошибка!(099)",
+                    description=" Я не имею право кикнуть участника, обновите мои роли чтобы система имело право кикать.",
                     color=0xE02B2B
                 )
                 await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="nick",
-        description="Change the nickname of a user on a server.",
+        description="Менять никнейм у юзера на сервере.",
     )
     @commands.has_permissions(manage_nicknames=True)
     @checks.not_blacklisted()
-    @app_commands.describe(user="The user that should have a new nickname.", nickname="The new nickname that should be set.")
+    @app_commands.describe(user="Юзер", nickname="Новый никнейм юзера который должен стоять.")
     async def nick(self, context: Context, user: discord.User, nickname: str = None) -> None:
         """
         Change the nickname of a user on a server.
@@ -90,27 +82,27 @@ class Moderation(commands.Cog, name="moderation"):
         try:
             await member.edit(nick=nickname)
             embed = discord.Embed(
-                title="Changed Nickname!",
-                description=f"**{member}'s** new nickname is **{nickname}**!",
+                title="Никнейм изменен!",
+                description=f"**{member}'s** имеет новый никнейм **{nickname}**!",
                 color=0x9C84EF
             )
             await context.send(embed=embed)
         except:
             embed = discord.Embed(
-                title="Error!",
-                description="An error occurred while trying to change the nickname of the user. Make sure my role is above the role of the user you want to change the nickname.",
+                title="Ошибка!(099)",
+                description="Я не имею право изменять никнейм участникам.",
                 color=0xE02B2B
             )
             await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="ban",
-        description="Bans a user from the server.",
+        description="Забанить анчоуса на сервере.",
     )
     @commands.has_permissions(ban_members=True)
     @checks.not_blacklisted()
-    @app_commands.describe(user="The user that should be banned.", reason="The reason why the user should be banned.")
-    async def ban(self, context: Context, user: discord.User, reason: str = "Not specified") -> None:
+    @app_commands.describe(user="Никнейм анчоуса.", reason="Причина.")
+    async def ban(self, context: Context, user: discord.User, reason: str = "Не указана.") -> None:
         """
         Bans a user from the server.
         
@@ -122,44 +114,44 @@ class Moderation(commands.Cog, name="moderation"):
         try:
             if member.guild_permissions.administrator:
                 embed = discord.Embed(
-                    title="Error!",
-                    description="User has Admin permissions.",
+                    title="Ошибка!(098)",
+                    description="Юзер имеет админ права.",
                     color=0xE02B2B
                 )
                 await context.send(embed=embed)
             else:
                 embed = discord.Embed(
-                    title="User Banned!",
-                    description=f"**{member}** was banned by **{context.author}**!",
+                    title="Участник забанен!",
+                    description=f"**{member}** был забанен за **{context.author}**!",
                     color=0x9C84EF
                 )
                 embed.add_field(
-                    name="Reason:",
+                    name="Причина:",
                     value=reason
                 )
                 await context.send(embed=embed)
                 try:
-                    await member.send(f"You were banned by **{context.author}**!\nReason: {reason}")
+                    await member.send(f"Вы были забанены**{context.author}**!\nПричина: {reason}")
                 except:
                     # Couldn't send a message in the private messages of the user
                     pass
                 await member.ban(reason=reason)
         except:
             embed = discord.Embed(
-                title="Error!",
-                description="An error occurred while trying to ban the user. Make sure my role is above the role of the user you want to ban.",
+                title="Ошибка!(099)",
+                description="Я не имею право банить.",
                 color=0xE02B2B
             )
             await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="warn",
-        description="Warns a user in the server.",
+        description="Выдает Варны участнику.",
     )
     @commands.has_permissions(manage_messages=True)
     @checks.not_blacklisted()
-    @app_commands.describe(user="The user that should be warned.", reason="The reason why the user should be warned.")
-    async def warn(self, context: Context, user: discord.User, reason: str = "Not specified") -> None:
+    @app_commands.describe(user="Никнейм.", reason="Причина.")
+    async def warn(self, context: Context, user: discord.User, reason: str = "Не указана") -> None:
         """
         Warns a user in his private messages.
 
@@ -170,28 +162,28 @@ class Moderation(commands.Cog, name="moderation"):
         member = context.guild.get_member(user.id) or await context.guild.fetch_member(user.id)
         total = db_manager.add_warn(user.id, context.guild.id, context.author.id, reason)
         embed = discord.Embed(
-            title="User Warned!",
-            description=f"**{member}** was warned by **{context.author}**!\nTotal warns for this user: {total}",
+            title="Участник заработал предупреждение!",
+            description=f"**{member}** получил предупреждение за **{context.author}**!\nВ итоге предупреждений: {total}",
             color=0x9C84EF
         )
         embed.add_field(
-            name="Reason:",
+            name="Причина:",
             value=reason
         )
         await context.send(embed=embed)
         try:
-            await member.send(f"You were warned by **{context.author}**!\nReason: {reason}")
+            await member.send(f"** Вы получили варн:{context.author}**!\nПричина: {reason}")
         except:
             # Couldn't send a message in the private messages of the user
-            await context.send(f"{member.mention}, you were warned by **{context.author}**!\nReason: {reason}")
+            await context.send(f"{member.mention}, вы получили предупреждение **{context.author}**!\nПричина: {reason}")
 
     @commands.hybrid_command(
         name="warnings",
-        description="Shows the warnings of a user in the server.",
+        description="Показ листа варнов у участника.",
     )
     @commands.has_guild_permissions(manage_messages=True)
     @checks.not_blacklisted()
-    @app_commands.describe(user="The user you want to get the warnings of.")
+    @app_commands.describe(user="Никнейм.")
     async def warnings(self, context: Context, user: discord.User):
         """
         Shows the warnings of a user in the server.
@@ -201,25 +193,25 @@ class Moderation(commands.Cog, name="moderation"):
         """
         warnings_list = db_manager.get_warnings(user.id, context.guild.id)
         embed = discord.Embed(
-            title = f"Warnings of {user}",
+            title = f"Предупреждения у {user}",
             color=0x9C84EF
         )
         description = ""
         if len(warnings_list) == 0:
-            description = "This user has no warnings."
+            description = "Участник не имеет предупреждений."
         else:
             for warning in warnings_list:
-                description += f"• Warned by <@{warning[2]}>: **{warning[3]}** (<t:{warning[4]}>)\n"
+                description += f"• Заварнен <@{warning[2]}>: **{warning[3]}** (<t:{warning[4]}>)\n"
         embed.description = description
         await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="purge",
-        description="Delete a number of messages.",
+        description="Удаляет сообщения.",
     )
     @commands.has_guild_permissions(manage_messages=True)
     @checks.not_blacklisted()
-    @app_commands.describe(amount="The amount of messages that should be deleted.")
+    @app_commands.describe(amount="Кол-во сколько нужно удалить сообщений.")
     async def purge(self, context: Context, amount: int) -> None:
         """
         Delete a number of messages.
@@ -229,8 +221,8 @@ class Moderation(commands.Cog, name="moderation"):
         """
         purged_messages = await context.channel.purge(limit=amount)
         embed = discord.Embed(
-            title="Chat Cleared!",
-            description=f"**{context.author}** cleared **{len(purged_messages)}** messages!",
+            title="Чат очищен!",
+            description=f"**{context.author}** очистил чат от **{len(purged_messages)}** сообщений!",
             color=0x9C84EF
         )
         await context.send(embed=embed)
